@@ -7,16 +7,14 @@ using namespace std;
 /*
 This function used from example @ https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/basic_shell.c 
 */
-class ExecuteCommand
+class Dash
 {
 	private:
-		string command;
-		char* args[];
+		string directory;
 	public:
-		ExecuteCommand(string command);
-		int Execute();
-		bool ContainsNumericOnly(string testPid);
-		void Print_cpu_time();
+		Dash(string dir);
+		void runDash();
+		void PrintUsageInfo();
+		vector<string> SplitUserCommand(string entireCommand);
 		string GetExePath();
-
 };
