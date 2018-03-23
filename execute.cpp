@@ -28,8 +28,6 @@ int ExecuteCommand::Execute()
       // Link: https://stackoverflow.com/questions/1511797/convert-string-to-argv-in-c
       // use shell symbolic link to execute c-string version of this command
       execl("/bin/sh", "/bin/sh", "-c", command.c_str(), NULL);
-
-      //execvp(args[0], args); 
       perror("Exec failed: "); 
       exit(5); 
    } 
@@ -40,30 +38,7 @@ int ExecuteCommand::Execute()
 }
 
 
-/* 
-Function: SplitUserCommand
 
-Tokenize user input on spaces and return as a vector of strings.
-
-Note: Code in this function modified from :
-   http://oopweb.com/CPP/Documents/CPPHOWTO/Volume/C++Programming-HOWTO-7.html
-
-Input: string entireCommand - string to tokenize  
-Output: vector<string> - each string between spaces
-*/
-vector<string> ExecuteCommand::SplitUserCommand(string entireCommand)
-{
-   vector<string> tokenized;
-   string buffer;
-   stringstream ss(entireCommand);
-
-   while (ss >> buffer)
-   {
-      tokenized.push_back(buffer);
-   }
-
-   return tokenized;
-}
 
 /* This method clearly taken from example code*/
 void ExecuteCommand::Print_cpu_time()
@@ -72,5 +47,6 @@ void ExecuteCommand::Print_cpu_time()
    getrusage (RUSAGE_SELF, &usage);
    cout << "CPU Time: " << usage.ru_utime.tv_sec << "." << usage.ru_utime.tv_usec << 
             " sec user, " << usage.ru_stime.tv_sec << "." << usage.ru_stime.tv_usec << " system" << endl;
+   cout << "Page faults: " << usage.ru_majflt << ", swaps: " << usage.ru_nswap << endl;
 
 }

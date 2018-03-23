@@ -10,6 +10,8 @@
 
 using namespace std;	
 
+ProcessIdentifier::ProcessIdentifier(string name) : processName(name) {}
+
 /* 
 Function: ProcessDirectory
 
@@ -119,7 +121,7 @@ void ProcessIdentifier::ExtractCmdline(string file, string process)
 			string withSpaces = helper.ReplaceNullTermToFirst(currentLine);
 			string startingProcess = helper.GetStartingProcess(withSpaces);
 			if (startingProcess == process)
-				PrintProcess(file);
+				FindProcess(file);
 		}
 	}
 }
@@ -133,7 +135,7 @@ Function: Print Process
 Input: string path - full path of file
 Output: none
 */
-void ProcessIdentifier::PrintProcess(string path)
+void ProcessIdentifier::FindProcess(string path)
 {
 	path.erase(0, 6); // get rid of /proc/
 
@@ -145,5 +147,5 @@ void ProcessIdentifier::PrintProcess(string path)
 		result.push_back(path.at(i));
 	}
 
-	cout << result << endl;
+	processName = result;
 }

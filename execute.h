@@ -15,7 +15,6 @@ class ExecuteCommand
 	public:
 		ExecuteCommand(string command);
 		int Execute();
-		vector<string> SplitUserCommand(string entireCommand);
 		bool ContainsNumericOnly(string testPid);
 		void Print_cpu_time();
 };

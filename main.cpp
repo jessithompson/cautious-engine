@@ -11,7 +11,7 @@
 
 using namespace std;
 void PrintUsageInfo();
-
+vector<string> SplitUserCommand(string entireCommand);
 
 /* 
 Function: main
@@ -50,59 +50,63 @@ int main(int argc, char *argv[])
 	string invalidCommand = "Invalid command!";
 	string command = "";
 	cout<<"dash>";
-	while (getline(cin, command) && command != "exit")
+	while (getline(cin, command) && command != "exit" && command != "e")
 	{	
-		// try to just run it and see what happens
-		ExecuteCommand runCommand(command);
-		if (runCommand.Execute() != 0)
+		// split command string on spaces and handle any problems with that
+		vector<string> splitCommand = SplitUserCommand(command);
+		if (splitCommand.size() == 2 && splitCommand[0] == "cmdnm")
 		{
-			// split command string on spaces and handle any problems with that
-			vector<string> splitCommand = runCommand.SplitUserCommand(command);
-			if (splitCommand.size() > 2)
+			Cmdnm _cmdnm(splitCommand[1]);
+			if (_cmdnm.ContainsNumericOnly(splitCommand[1]))
 			{
-				cout << invalidCommand + "   - Too many arguments given.\ndash>";
-				continue; 
+				_cmdnm.GetCommandName();
 			}
-			else if (splitCommand.size() == 2)
+			else
 			{
-				// correct number of arguments, 
-				if (splitCommand[0] == "cmdnm")
-				{
-					Cmdnm _cmdnm(splitCommand[1]);
-					if (_cmdnm.ContainsNumericOnly(splitCommand[1]))
-					{
-						_cmdnm.GetCommandName();
-					}
-					else
-					{
-						cout << invalidCommand << "   - Please enter a valid pid\ndash>";
-						continue;
-					}
-				}	
-				else if (splitCommand[0] == "pid")
-				{
-					ProcessIdentifier procid;
-					procid.ProcessDirectory("/proc", splitCommand[1]);
-				}	
-				else
-				{
-					cout << invalidCommand << "\ndash>" << endl;
-					continue; // skip rest of loop
-				}
+				cout << invalidCommand << "   - Please enter a valid pid\ndash>";
+				continue;
 			}
-			else if (splitCommand.size() == 1)
+		}
+		else if (splitCommand.size() == 1 && splitCommand[0] == "cmdnm")	
+		{
+			cout << invalidCommand << "   - Please enter a valid pid\ndash>";
+			continue;
+		}
+		else if (splitCommand.size() == 2 && splitCommand[0] == "pid")
+		{
+			ProcessIdentifier procid("");
+			procid.ProcessDirectory("/proc", splitCommand[1]);
+			if (procid.processName == "")
 			{
-				if (splitCommand[0] == "systat")
-				{
-					Systat systemInfo;
-					systemInfo.GetSystemInformation();
-				}
-				else
-				{
-					cout << invalidCommand << "\ndash>";
-					continue; // skip rest of loop				
-				}
+				cout << "No process found with name of " << splitCommand[1] << endl; 
 			}
+			else
+				cout << procid.processName << endl;
+			cout<<"dash>";
+			continue;
+		}
+		else if (splitCommand.size() == 1 && splitCommand[0] == "pid")
+		{
+			cout << invalidCommand << "   - Please enter a valid pid\ndash>";
+			continue;
+		}
+		else if (splitCommand.size() == 1 && splitCommand[0] == "systat")
+		{
+			Systat systemInfo;
+			systemInfo.GetSystemInformation();
+			cout<<"dash>";
+			continue;
+		}
+		else if (splitCommand[0] == "cd")
+		{
+
+		}
+		else
+		{
+			ExecuteCommand runCommand(command);
+			runCommand.Execute();
+			cout<<"dash>";
+			continue;
 		}
 		
 		cout<<"dash>";
@@ -129,4 +133,29 @@ void PrintUsageInfo()
    cout << "* systat          - Prints CPU info, uptime, and memory stats" << endl;
    cout << "* exit            - Quits program\n" << endl;
    cout << "To run program enter './dash '\n" << endl;
+}
+
+/* 
+Function: SplitUserCommand
+
+Tokenize user input on spaces and return as a vector of strings.
+
+Note: Code in this function modified from :
+   http://oopweb.com/CPP/Documents/CPPHOWTO/Volume/C++Programming-HOWTO-7.html
+
+Input: string entireCommand - string to tokenize  
+Output: vector<string> - each string between spaces
+*/
+vector<string> SplitUserCommand(string entireCommand)
+{
+   vector<string> tokenized;
+   string buffer;
+   stringstream ss(entireCommand);
+
+   while (ss >> buffer)
+   {
+      tokenized.push_back(buffer);
+   }
+
+   return tokenized;
 }
