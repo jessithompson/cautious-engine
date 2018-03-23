@@ -18,5 +18,6 @@ class ExecuteCommand
 		bool ContainsNumericOnly(string testPid);
 		void Print_cpu_time();
 		string GetExePath();
+		void ChangeDirectoryAndRunNewProc(string directory);
 
 };

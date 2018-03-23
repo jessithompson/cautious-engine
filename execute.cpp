@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <sys/wait.h>
+#include "dash.h"
 
 using namespace std;
 
@@ -82,15 +83,13 @@ void ExecuteCommand::ChangeDirectoryAndRunNewProc(string directory)
       // this code snipped here from Andy Ross @ Stackoverflow
       // Link: https://stackoverflow.com/questions/1511797/convert-string-to-argv-in-c
       // use shell symbolic link to execute c-string version of this command
-      chrdir(directory);
+      chdir(directory.c_str());
       Dash newDash(directory);
       newDash.runDash();
 
-      perror("Exec failed: "); 
       exit(5); 
    } 
    waitpid = wait(&status); 
    printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
    Print_cpu_time();
-
 }

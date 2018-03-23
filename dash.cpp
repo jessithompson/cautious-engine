@@ -71,7 +71,8 @@ void Dash::runDash()
       else if (splitCommand[0] == "cd")
       {
          ExecuteCommand runCommand(command);
-         runCommand.ChangeDirectoryAndRunNewProc(splitComand[1]);
+         runCommand.ChangeDirectoryAndRunNewProc(splitCommand[1]);
+         return; // by the time line 74 returns it will have exited Dash
       }
       else
       {
