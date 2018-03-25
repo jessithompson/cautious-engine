@@ -23,6 +23,7 @@ class Redirect
 		vector<string> ParseCommand_Output();
 		vector<string> ParseCommand_Input();
 		void RunCommand_Output();
+		void RunCommand_Input();
 		void Print_cpu_time(int pidToUse);
 
 	public:

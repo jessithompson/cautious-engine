@@ -21,7 +21,6 @@ void Redirect::DoRedirect()
 	{
 		if (direction == ">")
 		{
-			cout << "Output chosen " << endl;
 			parsedCommand = ParseCommand_Output();
 			filename = parsedCommand[1];
 			partial_command = parsedCommand[0];
@@ -31,9 +30,11 @@ void Redirect::DoRedirect()
 		else
 		{
 			parsedCommand = ParseCommand_Input();
-			filename = parsedCommand[0];
-			partial_command = parsedCommand[1];
+			filename = parsedCommand[1];
+			partial_command = parsedCommand[0];
+			RunCommand_Input();
 		}
+		
 	}
 	else
 	{
@@ -49,7 +50,6 @@ tcs @ http://www.cplusplus.com/forum/general/94879/
 */
 void Redirect::RunCommand_Output()
 {
-	cout << "Running output command" << endl;
 	int normalOutput = dup(1);
 	int fd = open(filename.c_str(),  O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
 	dup2(fd, 1);
@@ -74,6 +74,40 @@ void Redirect::RunCommand_Output()
 	Print_cpu_time(waitpid);
 	return;
 }
+
+/* 
+tcs @ http://www.cplusplus.com/forum/general/94879/
+
+*/
+void Redirect::RunCommand_Input()
+{
+	int normalInput = dup(0);
+	int input = open(filename.c_str(),  O_RDONLY);
+	dup2(input, 0);
+	close(input);
+
+	int childpid, status, waitpid;
+	childpid = fork(); 
+	if (childpid == 0) 
+	{ 
+		cout << "* Process Id of child process: " << getpid() << endl;
+    	cout << "\nOutput: " << endl;
+		execl("/bin/sh", "/bin/sh", "-c", partial_command.c_str(), NULL);
+		Print_cpu_time(waitpid);
+		exit(5); 
+	} 
+
+	// undo output redirect
+	fflush(stdout);
+	dup2(normalInput, 0);
+	close(normalInput);
+
+	waitpid = wait(&status); 
+	printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
+	return;
+}
+
+
 /* This method clearly taken from example code*/
 void Redirect::Print_cpu_time(int pidToUse)
 {
@@ -129,6 +163,6 @@ vector<string> Redirect::ParseCommand_Input()
 	    command.erase(0, pos + split.length());
 	}
 	tokens.push_back(command);
+
 	return tokens;
-	
 }
