@@ -1,5 +1,5 @@
-#ifndef DASH_H
-#define DASH_H
+#ifndef REDIRECT_H
+#define REDIRECT_H
 
 #include <iostream>
 #include <string>
@@ -10,16 +10,12 @@ using namespace std;
 /*
 This function used from example @ https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/basic_shell.c 
 */
-class Dash
+class Redirect
 {
 	private:
-		string directory;
+		string command;
 	public:
-		Dash(string dir);
-		void runDash();
-		void PrintUsageInfo();
-		vector<string> SplitUserCommand(string entireCommand);
-		string GetExePath();
+		Redirect(string command);
 };
 
 #endif

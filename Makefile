@@ -4,6 +4,7 @@ SOURCE = cmdnm.cpp \
          pid.cpp \
          pipe.cpp \
          dash.cpp\
+         redirect.cpp \
          systat.cpp
 OBJS = $(SOURCE:.cpp=.o)
 

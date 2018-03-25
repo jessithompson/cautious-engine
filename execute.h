@@ -1,3 +1,6 @@
+#ifndef EXECUTE_H
+#define EXECUTE_H 
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,13 +15,15 @@ class ExecuteCommand
 	private:
 		string command;
 		char* args[];
+		void Print_cpu_time(int pidToUse);
+		string GetExePath();
 	public:
 		ExecuteCommand(string command);
 		int Execute();
 		bool ContainsNumericOnly(string testPid);
-		void Print_cpu_time(int pidToUse);
-		string GetExePath();
 		void ChangeDirectoryAndRunNewProc(string directory);
 		void Signal(string procId, string signalToSend);
 
 };
+
+#endif

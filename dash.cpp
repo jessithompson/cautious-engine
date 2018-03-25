@@ -12,6 +12,7 @@
 #include "cmdnm.h"
 #include "execute.h"
 #include "dash.h"
+#include "redirect.h"
 
 Dash::Dash(string dir) : directory(dir) {}
 
@@ -87,6 +88,13 @@ void Dash::runDash()
          continue;
       }
       else if (command.find("|") != string::npos)
+      {
+         Pipe runPipe(command);
+         runPipe.DoPipe();
+         cout<<"dash>";
+         continue;
+      }
+      else if (command.find(">") != string::npos || command.find("<") != string::npos)
       {
          Pipe runPipe(command);
          runPipe.DoPipe();
