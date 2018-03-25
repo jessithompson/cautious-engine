@@ -8,6 +8,7 @@
 #include <unistd.h> 
 #include "systat.h"
 #include "pid.h"
+#include "pipe.h"
 #include "cmdnm.h"
 #include "execute.h"
 #include "dash.h"
@@ -73,6 +74,24 @@ void Dash::runDash()
          ExecuteCommand runCommand(command);
          runCommand.ChangeDirectoryAndRunNewProc(splitCommand[1]);
          return; // by the time line 74 returns it will have exited Dash
+      }
+      else if (splitCommand[0] == "signal" && splitCommand.size() == 3)
+      {
+         ExecuteCommand runCommand(command);
+         // syntax is signal <signal_num> <pid>
+         runCommand.Signal(splitCommand[1], splitCommand[2]);
+      }      
+      else if (splitCommand[0] == "signal" && splitCommand.size() != 3)
+      {
+         cout << invalidCommand << "   - Please enter a valid signal number and pid\ndash>";
+         continue;
+      }
+      else if (command.find("|") != string::npos)
+      {
+         Pipe runPipe(command);
+         runPipe.DoPipe();
+         cout<<"dash>";
+         continue;
       }
       else
       {

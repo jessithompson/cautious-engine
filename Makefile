@@ -2,6 +2,7 @@ SOURCE = cmdnm.cpp \
          execute.cpp \
          main.cpp \
          pid.cpp \
+         pipe.cpp \
          dash.cpp\
          systat.cpp
 OBJS = $(SOURCE:.cpp=.o)

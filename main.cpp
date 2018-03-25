@@ -8,6 +8,7 @@
 #include <unistd.h> 
 #include "systat.h"
 #include "pid.h"
+#include "pipe.h"
 #include "cmdnm.h"
 #include "execute.h"
 #include "dash.h"
