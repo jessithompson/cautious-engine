@@ -96,8 +96,8 @@ void Dash::runDash()
       }
       else if (command.find(">") != string::npos || command.find("<") != string::npos)
       {
-         Pipe runPipe(command);
-         runPipe.DoPipe();
+         Redirect runRedirect(command);
+         runRedirect.DoRedirect();
          cout<<"dash>";
          continue;
       }
