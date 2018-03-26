@@ -22,6 +22,8 @@ void signal_handler(int signal);
 Function: main
 
 Handle command line argument and requests by user for information. 
+Sets up signal handlers.
+Starts Dash.
 
 Input: int argc - number of command line arguments given by user
 	   char * argv[] - each command line argument provided   

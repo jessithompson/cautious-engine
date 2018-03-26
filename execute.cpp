@@ -56,6 +56,7 @@ void ExecuteCommand::Signal(string signalToSend, string procId)
    childpid = fork(); 
    if (childpid == 0) 
    { 
+      cout << "Sending signal " << to_string(signalToSend) << " to process " << procId << endl;
       cout << "* Process Id of child process: " << getpid() << endl;
       if (kill(stoi(procId), stoi(signalToSend)) != 0)
       {
