@@ -3,6 +3,9 @@
 
 using namespace std;
 
+/* 
+	Function to return command name of a process.
+*/
 class Cmdnm
 {
 	private:

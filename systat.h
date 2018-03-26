@@ -3,6 +3,9 @@
 
 using namespace std;
 
+/*
+	Class to get system statistics.
+*/
 class Systat
 {
 	public:

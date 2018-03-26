@@ -6,8 +6,17 @@
 
 using namespace std;
 
+/* 
+	Cmdnm constructor
+*/
 Cmdnm::Cmdnm() : pid("") {}
 
+/* 
+Cmdnm constructor
+
+Input: string processID - process to evaluate
+Output: none
+*/
 Cmdnm::Cmdnm(string processID): pid(processID) {}
 
 string Cmdnm::getProcessId()

@@ -11,6 +11,12 @@
 
 using namespace std;	
 
+/* 
+Process Identifier constructor
+
+Input: string name - process name to investigate
+Output: none
+*/
 ProcessIdentifier::ProcessIdentifier(string name) : processName(name) {}
 
 /* 
