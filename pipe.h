@@ -11,6 +11,7 @@ class Pipe
 {
 	private:
 		string command;
+		bool debug;
 		vector<string> tokenizedCommand;
 		void RunCommands();
 		

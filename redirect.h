@@ -18,6 +18,7 @@ class Redirect
 		string filename;
 		string partial_command;
 		vector<string> parsedCommand;
+		bool debug;
 		bool AssignDirection();
 		void RunCommand();
 		void RunCommand_Output();

@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
 
 	Dash dashProg;
 
-	// parse command line arguments
 	if (argc > 2)
 	{
 		cout << "Correct usage of this program is './dash' or './dash -h' for help" << endl;
@@ -90,5 +89,5 @@ Output: none
 */
 void signal_handler(int signal)
 {
-	cout << "Signal " << to_string(signal) << " recieved" << endl;
+	cout << "\nSignal " << to_string(signal) << " recieved" << endl;
 }

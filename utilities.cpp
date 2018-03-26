@@ -81,12 +81,13 @@ string Utilities::Trim(string trimString)
 
 
 /* 
-Function: Trim
+Function: ParseCommand_AndSlit
 
-Function to trim whitespace off the sides of a string.
-I'm too lazy to come up with one on my own so 
-this is from inspired by Vincenzo Pii @
-https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+Funciton to split a string into list of vectors, each containing
+part of the original string.
+
+Please note that this code is modified from 
+http://oopweb.com/CPP/Documents/CPPHOWTO/Volume/C++Programming-HOWTO-7.html
 
 Input: string command - string to trim
 		string delimiter - string to trim by

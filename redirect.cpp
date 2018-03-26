@@ -22,7 +22,7 @@ Sets class member command as part of instructor.
 Input: string _command - redirect command as input by user
 Output: none
 */
-Redirect::Redirect(string _command) : command(_command) {}
+Redirect::Redirect(string _command) : command(_command) { debug = false;}
 
 /* 
 Function: DoRedirect
@@ -106,11 +106,17 @@ void Redirect::RunCommand_Output()
 	dup2(normalOutput, 1);
 	close(normalOutput);
 
-	waitpid = wait(&status); 
-	cout << "* Process Id of child process: " << childpid << endl;
-	printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
-	Utilities utility;
-	utility.Print_cpu_time(waitpid);
+	if (debug)
+	{
+		waitpid = wait(&status); 
+		cout << "* Process Id of child process: " << childpid << endl;
+		printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
+		Utilities utility;
+		utility.Print_cpu_time(waitpid);
+	}
+	else
+		wait(&status); 
+
 	return;
 }
 
@@ -129,19 +135,21 @@ Output: none
 */
 void Redirect::RunCommand_Input()
 {
-	filename = "myoutput"; 
 	int normalInput = dup(0);
 	int input = open(filename.c_str(),  O_RDONLY);
 	dup2(input, 0);
 	close(input);
-	Utilities utility;
 
 	int childpid, status, waitpid;
 	childpid = fork(); 
 	if (childpid == 0) 
 	{ 
-		cout << "* Process Id of child process: " << getpid() << endl;
-    	cout << "\nOutput: " << endl;
+		if (debug)
+		{
+			cout << "* Process Id of child process: " << getpid() << endl;
+    		cout << "\nOutput: " << endl;
+		}
+
 		execl("/bin/sh", "/bin/sh", "-c", partial_command.c_str(), NULL);
 		exit(5); 
 	} 
@@ -151,9 +159,16 @@ void Redirect::RunCommand_Input()
 	dup2(normalInput, 0);
 	close(normalInput);
 
-	waitpid = wait(&status); 
-	printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
-	utility.Print_cpu_time(waitpid);
+	if (debug)
+	{
+		waitpid = wait(&status); 
+		printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
+		Utilities utility;
+		utility.Print_cpu_time(waitpid);
+	}
+	else
+		wait(&status); 
+
 	return;
 }
 
