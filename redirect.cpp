@@ -107,7 +107,6 @@ void Redirect::RunCommand_Input()
 		cout << "* Process Id of child process: " << getpid() << endl;
     	cout << "\nOutput: " << endl;
 		execl("/bin/sh", "/bin/sh", "-c", partial_command.c_str(), NULL);
-		utility.Print_cpu_time(waitpid);
 		exit(5); 
 	} 
 
@@ -118,6 +117,7 @@ void Redirect::RunCommand_Input()
 
 	waitpid = wait(&status); 
 	printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
+	utility.Print_cpu_time(waitpid);
 	return;
 }
 

@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
 	{
 	  currentDirectory = string(buf);
 	}
-	Dash dashProg(currentDirectory);
+
+	Dash dashProg;
 
 	// parse command line arguments
 	if (argc > 2)

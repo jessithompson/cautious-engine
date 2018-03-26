@@ -12,10 +12,7 @@ This function used from example @ https://www.mcs.sdsmt.edu/ckarlsso/csc456/spri
 */
 class Dash
 {
-	private:
-		string directory;
 	public:
-		Dash(string dir);
 		void runDash();
 		void PrintUsageInfo();
 		vector<string> SplitUserCommand(string entireCommand);

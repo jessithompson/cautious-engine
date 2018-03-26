@@ -15,8 +15,6 @@
 #include "redirect.h"
 #include "utilities.h"
 
-Dash::Dash(string dir) : directory(dir) {}
-
 void Dash::runDash()
 {
    cout<<"dash>";
