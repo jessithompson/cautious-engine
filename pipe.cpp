@@ -8,8 +8,25 @@
 
 using namespace std;
 
+/* 
+Function: Pipe constructor
+
+Sets class member command as part of instructor. 
+
+Input: string _command - redirect command as input by user
+Output: none
+*/
 Pipe::Pipe(string _command) : command(_command) {}
 
+/* 
+Function: DoPope
+
+Completes pipe preprocessing and ensure that single pipe commands
+are requested.
+
+Input: none
+Output: none
+*/
 void Pipe::DoPipe()
 {
 	Utilities utility;
@@ -26,7 +43,15 @@ void Pipe::DoPipe()
 	}
 }
 
-// inspired by https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/pipe.c
+/* 
+Function: RunCommands
+
+Execute commands requested by piping command. 
+Inspired by https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/pipe.c
+
+Input: none
+Output: none
+*/
 void Pipe::RunCommands()
 {
 	int pid1, pid2, waitpid1, waitpid2,  status;
@@ -47,7 +72,6 @@ void Pipe::RunCommands()
 			close(pipefd[0]); 
 			close(pipefd[1]);
 
-			// use ExecuteCommand code to run 
 			cout << "* Process Id of grandchild process: " << getpid() << endl;
 			cout << "\nOutput: " << endl;
 			execl("/bin/sh", "/bin/sh", "-c", tokenizedCommand[0].c_str(), NULL);
@@ -58,15 +82,14 @@ void Pipe::RunCommands()
 		message1 = "Grandchild process " + to_string(waitpid1) + " exited with status " + to_string(status>>8); 
 		utility.Print_cpu_time(waitpid1);
 
-		close(0);              // close standard input
-		dup(pipefd[0]);       // redirect the input
-		close(pipefd[0]);     // close unnecessary file descriptor
-		close(pipefd[1]);     // close unnecessary file descriptor
+		close(0);              
+		dup(pipefd[0]);       
+		close(pipefd[0]);     
+		close(pipefd[1]);     
 
 		cout << message1 << endl;
 		utility.Print_cpu_time(waitpid1);
 
-		// use ExecuteCommand code to run 
 		cout << "* Process Id of child process: " << getpid() << endl;
 		cout << "\nOutput: " << endl;
 		execl("/bin/sh", "/bin/sh", "-c", tokenizedCommand[1].c_str(), NULL);

@@ -14,8 +14,25 @@
 
 using namespace std;
 
+/* 
+Function: Redirect constructor
+
+Sets class member command as part of instructor. 
+
+Input: string _command - redirect command as input by user
+Output: none
+*/
 Redirect::Redirect(string _command) : command(_command) {}
 
+/* 
+Function: DoRedirect
+
+Completes preprocessessing for redirection command 
+and begins execution of the command. 
+
+Input: none
+Output: none
+*/
 void Redirect::DoRedirect()
 {
 	if (AssignDirection())
@@ -50,9 +67,19 @@ void Redirect::DoRedirect()
 
 }
 
-/* 
-tcs @ http://www.cplusplus.com/forum/general/94879/
 
+/* 
+Function: RunCommand_Output
+
+Completes output redirect command. 
+
+Please note that some of this code was helped by 
+tcs @ http://www.cplusplus.com/forum/general/94879/ in 
+addition to class example code at 
+https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/redir.c
+
+Input: none
+Output: none
 */
 void Redirect::RunCommand_Output()
 {
@@ -88,8 +115,17 @@ void Redirect::RunCommand_Output()
 }
 
 /* 
-tcs @ http://www.cplusplus.com/forum/general/94879/
+Function: RunCommand_Input
 
+Completes input redirect command. 
+
+Please note that some of this code was helped by 
+tcs @ http://www.cplusplus.com/forum/general/94879/ in 
+addition to class example code at 
+https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/redir.c
+
+Input: none
+Output: none
 */
 void Redirect::RunCommand_Input()
 {
@@ -121,7 +157,15 @@ void Redirect::RunCommand_Input()
 	return;
 }
 
+/* 
+Function: AssignDirection
 
+Designates whether the redirect is done by input
+or output.
+
+Input: none
+Output: none
+*/
 bool Redirect::AssignDirection()
 {
 	if (command.find(">") != string::npos)
@@ -137,38 +181,3 @@ bool Redirect::AssignDirection()
 	else
 		return false;
 }
-
-
-
-
-// inspired by Vincenzo Pii @
-// https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-/*vector<string> Redirect::ParseCommand_Output()
-{
-	size_t pos = 0;
-	vector<string> tokens;
-	string split = ">";
-	while ((pos = command.find(split)) != string::npos) {
-	    tokens.push_back(Trim(command.substr(0, pos)));
-	    command.erase(0, pos + split.length());
-	}
-	tokens.push_back(Trim(command));
-	return tokens;
-	
-}*/
-
-// inspired by Vincenzo Pii @
-// https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-/*vector<string> Redirect::ParseCommand_Input()
-{
-	size_t pos = 0;
-	vector<string> tokens;
-	string split = "<";
-	while ((pos = command.find(split)) != string::npos) {
-	    tokens.push_back(Trim(command.substr(0, pos)));
-	    command.erase(0, pos + split.length());
-	}
-	tokens.push_back(Trim(command));
-
-	return tokens;
-}*/

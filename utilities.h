@@ -6,6 +6,10 @@
 
 using namespace std;
 
+/*
+	Helper class that contains some frequently used methods across
+	the program.
+ */
 class Utilities 
 {
 	public:

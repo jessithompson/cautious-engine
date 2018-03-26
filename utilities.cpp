@@ -10,6 +10,17 @@
 #include <sys/time.h>
 #include <sys/resource.h> 
 
+/* 
+Function: GetExePath
+
+Returns the directory that the program is executed in. 
+
+This method isn't actually used anywhere in the program
+but at one point it seemed like it might be useful. 
+
+Input: none
+Output: none
+*/
 string Utilities::GetExePath()
 {
 	char buf[256];
@@ -25,7 +36,14 @@ string Utilities::GetExePath()
    return cwd;
 }
 
-/* This method clearly taken from example code*/
+/* 
+Function: Print_cpu_time
+
+This method clearly taken from example code. 
+
+Input: int pidToUse - pid that stats are from
+Output: stout to screen
+*/
 void Utilities::Print_cpu_time(int pidToUse)
 {
    struct rusage usage;
@@ -36,8 +54,18 @@ void Utilities::Print_cpu_time(int pidToUse)
    cout << "Page faults: " << usage.ru_majflt << ", swaps: " << usage.ru_nswap << endl;
 }
 
-// this function shamelessly used from Pushkoff 
-// @ https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+
+/* 
+Function: Trim
+
+Function to trim whitespace off the sides of a string.
+I'm too lazy to come up with one on my own so 
+this is from Pushkoff @ 
+https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+
+Input: string trimString - string to trim
+Output: string - string without whitespace
+*/
 string Utilities::Trim(string trimString)
 {
     string::const_iterator it = trimString.begin();
@@ -51,8 +79,19 @@ string Utilities::Trim(string trimString)
     return std::string(it, rit.base());
 }
 
-// inspired by Vincenzo Pii @
-// https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+
+/* 
+Function: Trim
+
+Function to trim whitespace off the sides of a string.
+I'm too lazy to come up with one on my own so 
+this is from inspired by Vincenzo Pii @
+https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+
+Input: string command - string to trim
+		string delimiter - string to trim by
+Output: vector<string> - a list of the string after it has been parsed
+*/
 vector<string> Utilities::ParseCommand_AndSplit(string command, string delimiter)
 {
 	size_t pos = 0;

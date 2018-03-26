@@ -80,7 +80,14 @@ int main(int argc, char *argv[])
 	return 0;	
 }
 
+/* 
+Function: signal_handler
 
+Prints each signal received by Dash. 
+
+Input: int signal - signal recieved by program
+Output: none
+*/
 void signal_handler(int signal)
 {
 	cout << "Signal " << to_string(signal) << " recieved" << endl;

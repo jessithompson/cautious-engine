@@ -15,6 +15,14 @@
 #include "redirect.h"
 #include "utilities.h"
 
+/* 
+Function: runDash
+
+Runs main part of program to receive commands.
+
+Input: none
+Output: none
+*/
 void Dash::runDash()
 {
    cout<<"dash>";
@@ -119,6 +127,7 @@ void Dash::runDash()
       cout<<"dash>";
    }
 }
+
 /* 
 Function: PrintUsageInfo
 

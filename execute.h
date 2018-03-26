@@ -8,7 +8,7 @@
 using namespace std;
 
 /*
-This function used from example @ https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/basic_shell.c 
+	A class to run various commands. 
 */
 class ExecuteCommand
 {

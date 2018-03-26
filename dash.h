@@ -7,8 +7,8 @@
 
 using namespace std;
 
-/*
-This function used from example @ https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/basic_shell.c 
+/* 
+	Class to run main part of Dash program.
 */
 class Dash
 {
