@@ -44,27 +44,9 @@ int ExecuteCommand::Execute()
    return 0;
 }
 
-void ExecuteCommand::ChangeDirectoryAndRunNewProc(string directory)
+void ExecuteCommand::ChangeDirectory(string directory)
 {
-   Utilities utility;
-   int childpid, status, waitpid;
-   childpid = fork(); 
-   if (childpid == 0) 
-   { 
-      cout << "* Process Id of child process: " << getpid() << endl;
-
-      // this code snipped here from Andy Ross @ Stackoverflow
-      // Link: https://stackoverflow.com/questions/1511797/convert-string-to-argv-in-c
-      // use shell symbolic link to execute c-string version of this command
-      chdir(directory.c_str());
-      Dash newDash(directory);
-      newDash.runDash();
-
-      exit(5); 
-   } 
-   waitpid = wait(&status); 
-   printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
-   utility.Print_cpu_time(waitpid);
+   chdir(directory.c_str());
 }
 
 void ExecuteCommand::Signal(string signalToSend, string procId)
@@ -87,3 +69,21 @@ void ExecuteCommand::Signal(string signalToSend, string procId)
 }
 
 
+
+// Note this method as other change directory function
+
+   //Utilities utility;
+   //int childpid, status, waitpid;
+   //childpid = fork(); 
+   //if (childpid == 0) 
+  // { 
+    //  cout << "* Process Id of child process: " << getpid() << endl;
+      //chdir(directory.c_str());      
+      //Dash newDash(directory);
+      //newDash.runDash();
+
+     // exit(5); 
+   //} 
+   //waitpid = wait(&status); 
+   //printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
+  //utility.Print_cpu_time(waitpid);

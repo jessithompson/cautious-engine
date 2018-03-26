@@ -29,9 +29,13 @@ void Pipe::DoPipe()
 // inspired by https://www.mcs.sdsmt.edu/ckarlsso/csc456/spring18/src/pipe.c
 void Pipe::RunCommands()
 {
-	int pid1, pid2, waitpid, status;
+	int pid1, pid2, waitpid1, waitpid2,  status;
 	int pipefd[2];
 	pid1 = fork();
+	string message1, message2;
+	string cputime1, cputime2;
+	Utilities utility;
+
 	if (pid1 == 0)
 	{
 		// execute input side in child process
@@ -52,11 +56,17 @@ void Pipe::RunCommands()
 			perror("Exec failed: "); 
 			exit(1); 
 		}
+		waitpid1 = wait(&status);
+		message1 = "Grandchild process " + to_string(waitpid1) + " exited with status " + to_string(status>>8); 
+		utility.Print_cpu_time(waitpid1);
 
 		close(0);              // close standard input
 		dup(pipefd[0]);       // redirect the input
 		close(pipefd[0]);     // close unnecessary file descriptor
 		close(pipefd[1]);     // close unnecessary file descriptor
+
+		cout << message1 << endl;
+		utility.Print_cpu_time(waitpid1);
 
 		// use ExecuteCommand code to run 
 		cout << "* Process Id of child process: " << getpid() << endl;
@@ -67,6 +77,8 @@ void Pipe::RunCommands()
 	}	
 	else
 	{
-		waitpid = wait(&status);
+		waitpid2 = wait(&status);
+		cout << "Child process " << to_string(waitpid2) << " exited with status " << to_string(status >> 8) << endl;
+		utility.Print_cpu_time(waitpid2);
 	}
 }

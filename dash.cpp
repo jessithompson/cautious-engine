@@ -78,8 +78,11 @@ void Dash::runDash()
       else if (splitCommand[0] == "cd")
       {
          ExecuteCommand runCommand(command);
-         runCommand.ChangeDirectoryAndRunNewProc(splitCommand[1]);
-         return; // by the time line 74 returns it will have exited Dash
+         runCommand.ChangeDirectory(splitCommand[1]);
+         cout<<"dash>";
+         continue;
+         //runCommand.ChangeDirectoryAndRunNewProc(splitCommand[1]);
+         //return; // by the time line 74 returns it will have exited Dash
       }
       else if (splitCommand[0] == "signal" && splitCommand.size() == 3)
       {

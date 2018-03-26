@@ -18,7 +18,7 @@ class ExecuteCommand
 	public:
 		ExecuteCommand(string command);
 		int Execute();
-		void ChangeDirectoryAndRunNewProc(string directory);
+		void ChangeDirectory(string directory);
 		void Signal(string procId, string signalToSend);
 };
 
