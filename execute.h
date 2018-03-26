@@ -15,15 +15,11 @@ class ExecuteCommand
 	private:
 		string command;
 		char* args[];
-		void Print_cpu_time(int pidToUse);
-		string GetExePath();
 	public:
 		ExecuteCommand(string command);
 		int Execute();
-		bool ContainsNumericOnly(string testPid);
 		void ChangeDirectoryAndRunNewProc(string directory);
 		void Signal(string procId, string signalToSend);
-
 };
 
 #endif

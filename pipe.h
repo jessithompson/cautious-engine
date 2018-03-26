@@ -11,7 +11,6 @@ class Pipe
 {
 	private:
 		string command;
-		vector<string> ParseCommand();
 		vector<string> tokenizedCommand;
 		void RunCommands();
 		

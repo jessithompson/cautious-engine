@@ -7,6 +7,7 @@
 #include "pid.h"
 #include "string.h"
 #include "cmdnm.h"
+#include "utilities.h"
 
 using namespace std;	
 
@@ -75,8 +76,8 @@ void ProcessIdentifier::ProcessObject(string path, string process, struct dirent
 
 		// only process directories that are process ids, 
 		// so the file must be totally numeric
-		Cmdnm helper;
-		if (helper.ContainsNumericOnly(string(object->d_name)))
+		Utilities utility;
+		if (utility.ContainsNumericOnly(string(object->d_name)))
 		{
 			// open up this directory too
 			ProcessDirectory(path + string(object->d_name), process);
@@ -117,8 +118,9 @@ void ProcessIdentifier::ExtractCmdline(string file, string process)
 		string currentLine;
 		while (getline(cmdnmFile, currentLine))
 		{
+			Utilities utility;
 			Cmdnm helper;
-			string withSpaces = helper.ReplaceNullTermToFirst(currentLine);
+			string withSpaces = utility.ReplaceNullTermToFirst(currentLine);
 			string startingProcess = helper.GetStartingProcess(withSpaces);
 			if (startingProcess == process)
 				FindProcess(file);

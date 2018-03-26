@@ -7,6 +7,7 @@
 #include <sys/resource.h>
 #include <sys/wait.h>
 #include "dash.h"
+#include "utilities.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ int ExecuteCommand::Execute()
    }
 
    int childpid, status, waitpid;
+   Utilities utility;
    childpid = fork(); 
    if (childpid == 0) 
    { 
@@ -37,46 +39,14 @@ int ExecuteCommand::Execute()
    } 
    waitpid = wait(&status); 
    printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
-   Print_cpu_time(waitpid);
+   utility.Print_cpu_time(waitpid);
 
    return 0;
 }
 
-/* This method clearly taken from example code*/
-void ExecuteCommand::Print_cpu_time(int pidToUse)
-{
-   struct rusage usage;
-   getrusage (RUSAGE_SELF, &usage);
-   cout << "\n~~~Process stats of PID " << pidToUse << "~~~" << endl;
-   cout << "CPU Time: " << usage.ru_utime.tv_sec << "." << usage.ru_utime.tv_usec << 
-            " sec user, " << usage.ru_stime.tv_sec << "." << usage.ru_stime.tv_usec << " system" << endl;
-   cout << "Page faults: " << usage.ru_majflt << ", swaps: " << usage.ru_nswap << endl;
-
-}
-
-string ExecuteCommand::GetExePath()
-{
-   char buf[256];
-   string cwd = "";
-   if (getcwd(buf, sizeof(buf)) == NULL)
-   {
-      cwd = "error";
-   }
-   else
-   {
-      cwd = string(buf);
-   }
-   return cwd;
-}
-
 void ExecuteCommand::ChangeDirectoryAndRunNewProc(string directory)
 {
-   // fork process and in child, 
-      // programmatically change directory
-      // create new Dash object and run it 
-      // wait for it to finish
-   // return
-
+   Utilities utility;
    int childpid, status, waitpid;
    childpid = fork(); 
    if (childpid == 0) 
@@ -94,12 +64,13 @@ void ExecuteCommand::ChangeDirectoryAndRunNewProc(string directory)
    } 
    waitpid = wait(&status); 
    printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
-   Print_cpu_time(waitpid);
+   utility.Print_cpu_time(waitpid);
 }
 
 void ExecuteCommand::Signal(string signalToSend, string procId)
 {
    int childpid, status, waitpid;
+   Utilities utility;
    childpid = fork(); 
    if (childpid == 0) 
    { 
@@ -112,7 +83,7 @@ void ExecuteCommand::Signal(string signalToSend, string procId)
    } 
    waitpid = wait(&status); 
    printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
-   Print_cpu_time(waitpid);
+   utility.Print_cpu_time(waitpid);
 }
 
 

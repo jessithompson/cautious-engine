@@ -13,24 +13,29 @@
 #include "execute.h"
 #include "dash.h"
 #include "redirect.h"
+#include "utilities.h"
 
 Dash::Dash(string dir) : directory(dir) {}
 
 void Dash::runDash()
 {
-   // change directory to the class directory
-
    cout<<"dash>";
    string invalidCommand = "Invalid command!";
    string command = "";
+   Utilities utility;
    while (getline(cin, command) && command != "exit" && command != "e")
    {  
+      if (command == "")
+      {
+         cout << "dash>";
+         continue;
+      }
       // split command string on spaces and handle any problems with that
       vector<string> splitCommand = SplitUserCommand(command);
       if (splitCommand.size() == 2 && splitCommand[0] == "cmdnm")
       {
          Cmdnm _cmdnm(splitCommand[1]);
-         if (_cmdnm.ContainsNumericOnly(splitCommand[1]))
+         if (utility.ContainsNumericOnly(splitCommand[1]))
          {
             _cmdnm.GetCommandName();
          }
@@ -156,17 +161,3 @@ vector<string> Dash::SplitUserCommand(string entireCommand)
    return tokenized;
 }
 
-string Dash::GetExePath()
-{
-   char buf[256];
-   string cwd = "";
-   if (getcwd(buf, sizeof(buf)) == NULL)
-   {
-      cwd = "error";
-   }
-   else
-   {
-      cwd = string(buf);
-   }
-   return cwd;
-}

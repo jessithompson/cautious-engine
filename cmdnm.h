@@ -16,5 +16,4 @@ class Cmdnm
 		string ReplaceNullTermToFirst(string line);
 		string GetStartingProcess(string cmd);
 		void DoFileWork(string pid);	
-		bool ContainsNumericOnly(string testString);
 };

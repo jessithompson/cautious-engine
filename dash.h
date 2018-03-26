@@ -19,7 +19,6 @@ class Dash
 		void runDash();
 		void PrintUsageInfo();
 		vector<string> SplitUserCommand(string entireCommand);
-		string GetExePath();
 };
 
 #endif

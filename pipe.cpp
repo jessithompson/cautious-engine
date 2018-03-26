@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include "pipe.h"
 #include "execute.h"
+#include "utilities.h"
 
 using namespace std;
 
@@ -11,7 +12,8 @@ Pipe::Pipe(string _command) : command(_command) {}
 
 void Pipe::DoPipe()
 {
-	tokenizedCommand = ParseCommand();
+	Utilities utility;
+	tokenizedCommand = utility.ParseCommand_AndSplit(command, "|");
 	if (tokenizedCommand.size() < 3 && tokenizedCommand[0] != "" && tokenizedCommand[1] != "")
 	{
 		RunCommands();
@@ -67,20 +69,4 @@ void Pipe::RunCommands()
 	{
 		waitpid = wait(&status);
 	}
-}
-
-// inspired by Vincenzo Pii @
-// https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-vector<string> Pipe::ParseCommand()
-{
-	size_t pos = 0;
-	vector<string> tokens;
-	string split = "|";
-	while ((pos = command.find(split)) != string::npos) {
-	    tokens.push_back(command.substr(0, pos));
-	    command.erase(0, pos + split.length());
-	}
-	tokens.push_back(command);
-	return tokens;
-	
 }

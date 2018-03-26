@@ -6,6 +6,7 @@
 #include <vector>
 #include "dash.h"
 #include "redirect.h"
+#include "utilities.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,20 +20,25 @@ void Redirect::DoRedirect()
 {
 	if (AssignDirection())
 	{
+		Utilities utility;
 		if (direction == ">")
 		{
-			parsedCommand = ParseCommand_Output();
+			parsedCommand = utility.ParseCommand_AndSplit(command, ">");
 			filename = parsedCommand[1];
 			partial_command = parsedCommand[0];
-			cout << "Filename: " << filename << "  Command: " << partial_command << endl;
 			RunCommand_Output();
 		}
-		else
+		else if (direction == "<")
 		{
-			parsedCommand = ParseCommand_Input();
+			parsedCommand = utility.ParseCommand_AndSplit(command, "<");
 			filename = parsedCommand[1];
 			partial_command = parsedCommand[0];
 			RunCommand_Input();
+		}
+		else
+		{
+			cout << "There was a problem doing the redirect" << endl;
+			return;
 		}
 		
 	}
@@ -51,9 +57,14 @@ tcs @ http://www.cplusplus.com/forum/general/94879/
 void Redirect::RunCommand_Output()
 {
 	int normalOutput = dup(1);
-	int fd = open(filename.c_str(),  O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
-	dup2(fd, 1);
-	close(fd);
+	int fileDescriptor = open(filename.c_str(),  O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
+	if (fileDescriptor < 0)
+	{
+		cout << "There was a problem opening " << filename << " for output" << endl;
+		return;
+	}
+	dup2(fileDescriptor, 1);
+	close(fileDescriptor);
 
 	int childpid, status, waitpid;
 	childpid = fork(); 
@@ -71,7 +82,8 @@ void Redirect::RunCommand_Output()
 	waitpid = wait(&status); 
 	cout << "* Process Id of child process: " << childpid << endl;
 	printf("Shell process %d exited with status %d\n", waitpid, (status >> 8)); 
-	Print_cpu_time(waitpid);
+	Utilities utility;
+	utility.Print_cpu_time(waitpid);
 	return;
 }
 
@@ -81,10 +93,12 @@ tcs @ http://www.cplusplus.com/forum/general/94879/
 */
 void Redirect::RunCommand_Input()
 {
+	filename = "myoutput"; 
 	int normalInput = dup(0);
 	int input = open(filename.c_str(),  O_RDONLY);
 	dup2(input, 0);
 	close(input);
+	Utilities utility;
 
 	int childpid, status, waitpid;
 	childpid = fork(); 
@@ -93,7 +107,7 @@ void Redirect::RunCommand_Input()
 		cout << "* Process Id of child process: " << getpid() << endl;
     	cout << "\nOutput: " << endl;
 		execl("/bin/sh", "/bin/sh", "-c", partial_command.c_str(), NULL);
-		Print_cpu_time(waitpid);
+		utility.Print_cpu_time(waitpid);
 		exit(5); 
 	} 
 
@@ -108,17 +122,6 @@ void Redirect::RunCommand_Input()
 }
 
 
-/* This method clearly taken from example code*/
-void Redirect::Print_cpu_time(int pidToUse)
-{
-   struct rusage usage;
-   getrusage (RUSAGE_SELF, &usage);
-   cout << "\n~~~Process stats of PID " << pidToUse << "~~~" << endl;
-   cout << "CPU Time: " << usage.ru_utime.tv_sec << "." << usage.ru_utime.tv_usec << 
-            " sec user, " << usage.ru_stime.tv_sec << "." << usage.ru_stime.tv_usec << " system" << endl;
-   cout << "Page faults: " << usage.ru_majflt << ", swaps: " << usage.ru_nswap << endl;
-
-}
 bool Redirect::AssignDirection()
 {
 	if (command.find(">") != string::npos)
@@ -135,34 +138,37 @@ bool Redirect::AssignDirection()
 		return false;
 }
 
+
+
+
 // inspired by Vincenzo Pii @
 // https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-vector<string> Redirect::ParseCommand_Output()
+/*vector<string> Redirect::ParseCommand_Output()
 {
 	size_t pos = 0;
 	vector<string> tokens;
 	string split = ">";
 	while ((pos = command.find(split)) != string::npos) {
-	    tokens.push_back(command.substr(0, pos));
+	    tokens.push_back(Trim(command.substr(0, pos)));
 	    command.erase(0, pos + split.length());
 	}
-	tokens.push_back(command);
+	tokens.push_back(Trim(command));
 	return tokens;
 	
-}
+}*/
 
 // inspired by Vincenzo Pii @
 // https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-vector<string> Redirect::ParseCommand_Input()
+/*vector<string> Redirect::ParseCommand_Input()
 {
 	size_t pos = 0;
 	vector<string> tokens;
 	string split = "<";
 	while ((pos = command.find(split)) != string::npos) {
-	    tokens.push_back(command.substr(0, pos));
+	    tokens.push_back(Trim(command.substr(0, pos)));
 	    command.erase(0, pos + split.length());
 	}
-	tokens.push_back(command);
+	tokens.push_back(Trim(command));
 
 	return tokens;
-}
+}*/

@@ -1,5 +1,5 @@
 #include "cmdnm.h"
-
+#include "utilities.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -42,37 +42,7 @@ void Cmdnm::GetCommandName()
 	catch (...)
 	{}
 }
-/* 
-Function: ReplaceNullTermToFirst
 
-Walks through supplied string, copying each character
-into a different string until a null terminator is found, 
-and then returns.
-
-Input: string line - string to parse and copy
-Output: string result - string from first character 
-						of line to the first null terminator
-*/
-string Cmdnm::ReplaceNullTermToFirst(string line)
-{
-	// walk through string looking for spaces
-	string result = "";
-	int length = line.length();
-	for (int i = 0; i < length; i++)
-	{
-		if (line.at(i) == '\0')
-		{
-			break;
-		}
-		else
-		{
-			// build result string one character at a time
-			result += line.at(i);
-		}
-	}
-
-	return result;
-}
 
 /* 
 Function: GetStartingProcess
@@ -150,6 +120,7 @@ Output: none
 */
 void Cmdnm::DoFileWork(string pid)
 {
+	Utilities utility;
 	// open file
 	string filename = "/proc/" + pid + "/cmdline";
 	ifstream cmdnmFile(filename);
@@ -161,7 +132,7 @@ void Cmdnm::DoFileWork(string pid)
 		{
 			// if the file wasn't empty, parse it and print process
 			emptyFile = false;
-			string withSpaces = ReplaceNullTermToFirst(currentLine);
+			string withSpaces = utility.ReplaceNullTermToFirst(currentLine);
 			cout << GetStartingProcess(withSpaces) << endl;
 		}
 		if (emptyFile)
@@ -170,17 +141,4 @@ void Cmdnm::DoFileWork(string pid)
 		}
 	}
 	
-}
-
-/* 
-Function: ContainsNumericOnly
-
-Function to determine if a string contains only numbers.
-
-Input: string testString - string to check
-Output: true if only contains numbers, false otherwise
-*/	
-bool Cmdnm::ContainsNumericOnly(string testString)
-{
-	return !(testString.find_first_not_of("0123456789") != string::npos);
 }
