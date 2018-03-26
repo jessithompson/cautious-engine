@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <limits.h>
 #include <unistd.h> 
+#include <csignal>
 #include "systat.h"
 #include "pid.h"
 #include "pipe.h"
@@ -14,6 +15,8 @@
 #include "dash.h"
 
 using namespace std;
+
+void signal_handler(int signal);
 
 /* 
 Function: main
@@ -62,7 +65,20 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// set up signal handlers
+	signal(SIGABRT, signal_handler);
+	signal(SIGFPE, signal_handler);
+	signal(SIGILL, signal_handler);
+	signal(SIGINT, signal_handler);
+	signal(SIGSEGV, signal_handler);
+	signal(SIGTERM, signal_handler);
+
 	dashProg.runDash();	
 	return 0;	
 }
 
+
+void signal_handler(int signal)
+{
+	cout << "Signal " << to_string(signal) << " recieved" << endl;
+}

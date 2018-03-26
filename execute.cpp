@@ -68,8 +68,6 @@ void ExecuteCommand::Signal(string signalToSend, string procId)
    utility.Print_cpu_time(waitpid);
 }
 
-
-
 // Note this method as other change directory function
 
    //Utilities utility;

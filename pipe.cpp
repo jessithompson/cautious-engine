@@ -38,12 +38,10 @@ void Pipe::RunCommands()
 
 	if (pid1 == 0)
 	{
-		// execute input side in child process
 		pipe(pipefd);
 		pid2 = fork();
 		if (pid2 == 0)
 		{
-			//grandchild
 			close(1);
 			dup(pipefd[1]);
 			close(pipefd[0]); 

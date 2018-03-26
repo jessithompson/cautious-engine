@@ -81,13 +81,14 @@ void Dash::runDash()
          runCommand.ChangeDirectory(splitCommand[1]);
          cout<<"dash>";
          continue;
-         //runCommand.ChangeDirectoryAndRunNewProc(splitCommand[1]);
-         //return; // by the time line 74 returns it will have exited Dash
+
+         // Old code (see documentation for explanation):
+         /* runCommand.ChangeDirectoryAndRunNewProc(splitCommand[1]);
+            return; // by the time line 74 returns it will have exited Dash*/
       }
       else if (splitCommand[0] == "signal" && splitCommand.size() == 3)
       {
          ExecuteCommand runCommand(command);
-         // syntax is signal <signal_num> <pid>
          runCommand.Signal(splitCommand[1], splitCommand[2]);
       }      
       else if (splitCommand[0] == "signal" && splitCommand.size() != 3)
